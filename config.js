@@ -23,7 +23,7 @@ const config = {
 
     musica: {
         titulo: "Nuestra Canción",
-        archivo: "audio/nuestra-cacncion.mp3"
+        archivo: "audio/nuestra-cancion.mp3"
     },
 
     evento: {
@@ -53,7 +53,7 @@ const config = {
         hashtag: "#RenatoYJulie",
         instagramUrl: "",
         facebookUrl: "",
-        marcaTexto: "Diseno",
+        marcaTexto: "Diseño",
         marcaNombre: "Two Design",
         marcaUrl: "https://twodesign.com"
     }

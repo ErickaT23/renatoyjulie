@@ -84,7 +84,7 @@ function createSiteConfig(remoteConfig) {
         },
         musica: {
             titulo: 'Nuestra Cancion',
-            archivo: 'audio/nuestra-cacncion.mp3',
+            archivo: 'audio/nuestra-cancion.mp3',
             ...externalConfig.musica,
             ...normalizedRemoteConfig.musica
         },
@@ -116,9 +116,9 @@ function createSiteConfig(remoteConfig) {
         },
         footer: {
             hashtag: '#RenatoYJulie',
-            instagramUrl: 'https://instagram.com/rocio.fernando.boda',
-            facebookUrl: 'https://facebook.com/rociofernandoboda',
-            marcaTexto: 'Diseno',
+            instagramUrl: '',
+            facebookUrl: '',
+            marcaTexto: 'Diseño',
             marcaNombre: 'Two Design',
             marcaUrl: 'https://twodesign.com',
             ...externalConfig.footer,
