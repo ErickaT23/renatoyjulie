@@ -3762,6 +3762,38 @@ lord-icon {
     accent-color: midnightblue;
 }
 
+#guest-count-wrapper > label {
+    font-family: var(--font-display) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    background: var(--gradient-beige-elegante);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#guest-count {
+    font-family: var(--font-body) !important;
+    font-size: 0.65rem !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.15em !important;
+    color: #172F58 !important;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    box-shadow: 0 8px 24px rgba(5, 11, 28, 0.16);
+}
+
+.rsvp-label {
+    font-family: var(--font-display) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    background: var(--gradient-beige-elegante) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
 /* Sistema tipografico unificado para titulos y textos de contenido. */
 .event-titulo,
 .event-inicial,
