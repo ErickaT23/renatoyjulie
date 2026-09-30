@@ -9,13 +9,14 @@
     --color-black: #101A2E;
     --color-mocca: rgb(35, 64, 111);
     --color-corinto: rgb(35, 64, 111);
-    --color-corinto-dark: #00008B;
+    --color-corinto-dark: #00005a;
     --color-corinto-light: #49699D;
     --color-corinto-text: #191970;
     --color-white: #FFFFFF;
     
-    --gradient-beige-elegante: linear-gradient(135deg, #FFF8DD 0%, #D6B36A 48%, #9A7428 100%);
+    --gradient-beige-elegante: linear-gradient(135deg, #7A5918 0%, #B88A2A 38%, #E0BD63 55%, #9A701F 78%, #604510 100%);
     --gradient-corinto: linear-gradient(135deg, #00008B 0%, rgb(35, 64, 111) 55%, #191970 100%);
+    --gradient-crema: linear-gradient(115deg, #F5EBD2 0%, #FFF9E8 48%, #DCCDAA 100%);
     
     --font-display: 'Cinzel', Georgia, serif;
     --font-script: 'Pinyon Script', cursive;
@@ -117,7 +118,6 @@ h1, h2, h3,
 .wishes-text,
 .rsvp-intro {
     font-family: var(--font-editorial);
-    font-style: italic;
 }
 
 img {
@@ -286,16 +286,19 @@ button {
     font-weight: 400;
     letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--color-corinto);
-    border: 1px solid var(--color-corinto);
+    color: #233F6F;
+    border: 1px solid #41699E;
+    background: transparent;
+    -webkit-text-fill-color: #233F6F;
     background: transparent;
     cursor: pointer;
     transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .portada-boton:hover {
-    background: var(--color-corinto);
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #41699E 100%);
     color: var(--color-cream);
+    -webkit-text-fill-color: var(--color-cream);
 }
 
 /* ==================== INVITACION ==================== */
@@ -1106,14 +1109,14 @@ button {
 .countdown-fondo {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, #5C3A3A 0%, #7A4A4A 50%, #4A2C2C 100%);
-    background-color: var(--color-corinto);
+    background: linear-gradient(135deg, #050B1C 0%, #101F3D 50%, #00008B 100%);
+    background-color: #050B1C;
 }
 
 .countdown-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, rgba(92, 58, 58, 0.3) 0%, rgba(44, 28, 28, 0.6) 100%);
+    background: radial-gradient(ellipse at center, rgba(10, 24, 52, 0.42) 0%, rgba(2, 6, 18, 0.88) 100%);
 }
 
 .countdown-section .section-inner {
@@ -1328,7 +1331,6 @@ button {
     z-index: 2;
     font-size: 0.8rem;
     color: var(--color-mocca);
-    margin-bottom: 1.2rem;
 }
 
 .btn-location {
@@ -2105,6 +2107,15 @@ button {
     margin-bottom: 1rem;
     line-height: 1;
     background: linear-gradient(135deg, #E8D5CD 0%, #FFFEFA 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gifts-title-inicial,
+.gifts-title-resto {
+    font-family: var(--font-display) !important;
+    background: var(--gradient-crema);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -3153,7 +3164,7 @@ button {
 }
 
 .countdown-titulo {
-    font-size: calc(clamp(1.4rem, 4vw, 1.8rem) + var(--font-bump-title));
+    font-size: 22px;
     margin-bottom: 2.35rem;
 }
 
@@ -3176,6 +3187,173 @@ button {
     font-size: calc(clamp(0.6rem, 1.5vw, 0.7rem) + var(--font-bump-base));
 }
 
+.countdown-titulo {
+    font-family: var(--font-script) !important;
+    font-weight: 400;
+    background: var(--gradient-crema);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.countdown-number,
+.countdown-label,
+.countdown-separator {
+    background: var(--gradient-crema);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-calendar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF9E8;
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(5, 11, 28, 0.28);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-calendar:hover {
+    color: #FFFFFF;
+    background: linear-gradient(115deg, #00008B 0%, rgb(35, 64, 111) 100%);
+    border: none;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(5, 11, 28, 0.36);
+}
+
+.invitado-mensaje {
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.invitado-lugares,
+.event-time,
+.event-lugar,
+.event-direccion,
+.event-nota,
+.itinerary-time,
+.gift-option-text,
+.dresscode-text,
+.media-share-text,
+.wishes-text,
+.rsvp-intro,
+.section-text-simple,
+.section-title-simple,
+.countdown-label {
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.event-titulo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    background: var(--gradient-beige-elegante);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.event-time,
+.event-lugar,
+.event-direccion,
+.event-nota {
+    font-family: var(--font-editorial);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+}
+
+.gifts-section {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #050B1C 0%, #101F3D 50%, #00008B 100%);
+}
+
+.gifts-fondo {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(10, 24, 52, 0.42) 0%, rgba(2, 6, 18, 0.88) 100%);
+}
+
+.gifts-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.gifts-title {
+    font-family: var(--font-display) !important;
+    font-size: 22px;
+    margin-bottom: 2.35rem !important;
+    line-height: 1;
+    font-weight: 400;
+    background: var(--gradient-crema);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gifts-title-inicial,
+.gifts-title-resto {
+    font-family: var(--font-display) !important;
+    font-size: inherit;
+    font-weight: 400;
+    background: inherit;
+    -webkit-background-clip: inherit;
+    background-clip: inherit;
+    -webkit-text-fill-color: inherit;
+}
+
+.gifts-text {
+    font-family: var(--font-editorial);
+    font-size: 15px;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    line-height: 1.8;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-gift {
+    color: #FFF9E8;
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(5, 11, 28, 0.28);
+}
+
+.event-nota {
+    position: relative;
+    z-index: 2;
+    font-size: 12px;
+    padding: 10px;
+}
+
+.countdown-label {
+    background: var(--gradient-crema);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-calendar,
+.btn-gift,
+.btn-wish-submit {
+    color: #172F58;
+}
+
 .event-card {
     padding: 2.35rem 1.7rem;
 }
@@ -3193,23 +3371,6 @@ lord-icon {
     font-size: calc(clamp(1.3rem, 3vw, 1.6rem) + var(--font-bump-title));
     margin-bottom: 1rem;
     line-height: 1.25;
-}
-
-.event-time {
-    font-size: calc(clamp(1.2rem, 3vw, 1.5rem) + var(--font-bump-title));
-    margin-bottom: 1rem;
-}
-
-.event-lugar {
-    font-size: calc(0.9rem + var(--font-bump-base));
-    line-height: 1.6;
-    margin-bottom: 0.45rem;
-}
-
-.event-direccion {
-    font-size: calc(0.8rem + var(--font-bump-base));
-    line-height: 1.65;
-    margin-bottom: 1.4rem;
 }
 
 .btn-location {
@@ -3517,6 +3678,116 @@ lord-icon {
 .wishes-inner,
 .rsvp-panel,
 .gift-modal-card {
+    border-radius: 2px;
+}
+
+.dresscode-inner,
+.media-share-inner {
+    text-align: center;
+}
+
+.dresscode-title,
+.dresscode-title-inicial,
+.dresscode-title-resto,
+.media-share-title,
+.media-share-inicial,
+.media-share-resto {
+    font-family: var(--font-display) !important;
+    font-size: 22px !important;
+    font-weight: 400 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 1rem !important;
+    background: var(--gradient-beige-elegante) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.dresscode-text,
+.media-share-text {
+    font-family: var(--font-editorial) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.6 !important;
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dresscode-actions,
+.media-share-inner .btn-media-share {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-dresscode,
+.btn-media-share {
+    color: var(--color-white);
+    background: var(--color-corinto);
+    border: none;
+    border-radius: 2px;
+}
+
+.playlist-inner {
+    text-align: center;
+}
+
+.playlist-icon,
+.playlist-icon lord-icon {
+    position: relative;
+    z-index: 2;
+    width: 64px !important;
+    height: 64px !important;
+    margin: 0 auto 1rem;
+}
+
+.playlist-title,
+.playlist-title-inicial,
+.playlist-title-resto {
+    font-family: var(--font-display) !important;
+    font-size: 22px !important;
+    font-weight: 400 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 1rem !important;
+    background: var(--gradient-beige-elegante) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.playlist-text {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-editorial) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.6 !important;
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-playlist {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-white);
+    background: var(--color-corinto);
+    border: none;
     border-radius: 2px;
 }
 
@@ -3998,4 +4269,73 @@ lord-icon {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+}
+
+/* Ajustes finales de tipografia para la seccion de regalos. */
+.gifts-title,
+.gifts-title-inicial,
+.gifts-title-resto {
+    font-family: var(--font-display) !important;
+    font-size: 22px !important;
+    font-weight: 400 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 1rem !important;
+    letter-spacing: normal !important;
+    background: var(--gradient-crema) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.gifts-text {
+    font-family: var(--font-editorial) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.8 !important;
+    margin-bottom: 0.8rem !important;
+    background: var(--gradient-crema) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.gift-modal-title {
+    font-family: var(--font-display) !important;
+    font-size: 22px !important;
+    font-weight: 400 !important;
+    line-height: 1.25 !important;
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gift-modal-data {
+    font-family: var(--font-editorial) !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.6 !important;
+    background: linear-gradient(115deg, #00005A 0%, #233F6F 45%, #7892BE 70%, #00008B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-gift-copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-white) !important;
+    background: var(--color-corinto) !important;
+    border: none !important;
+    border-radius: 2px;
 }
