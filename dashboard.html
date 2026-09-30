@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard de confirmaciones RSVP de la boda de Rocio y Fernando">
+    <title>Dashboard RSVP | Rocio &amp; Fernando</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400&family=Libre+Baskerville:ital@0;1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <main class="dashboard-shell">
+        <header class="dashboard-header">
+            <p class="dashboard-kicker">Panel RSVP</p>
+            <h1>Confirmación de Boda</h1>
+            <p class="dashboard-subtitle">Rocio &amp; Fernando</p>
+        </header>
+
+        <section class="dashboard-summary" aria-label="Resumen RSVP">
+            <article class="summary-card">
+                <p class="summary-label">Total de Invitaciones</p>
+                <p class="summary-value" id="summary-total-guests">0</p>
+            </article>
+            <article class="summary-card">
+                <p class="summary-label">Invitados Confirmados</p>
+                <p class="summary-value" id="summary-yes">0</p>
+            </article>
+            <article class="summary-card">
+                <p class="summary-label">Invitados que no asistirán</p>
+                <p class="summary-value" id="summary-no">0</p>
+            </article>
+            <article class="summary-card">
+                <p class="summary-label">Invitados con Confirmación Pendiente</p>
+                <p class="summary-value" id="summary-pending">0</p>
+            </article>
+            <article class="summary-card summary-card-highlight">
+                <p class="summary-label">Total personas confirmadas</p>
+                <p class="summary-value" id="summary-confirmed-people">0</p>
+            </article>
+        </section>
+
+        <section class="dashboard-table-panel" aria-label="Listado de confirmaciones">
+            <div class="table-panel-header">
+                <h2>Listado de confirmaciones</h2>
+                <p>Actualización en tiempo real desde RSVP</p>
+            </div>
+            <p class="dashboard-event-current" id="dashboard-event-current">Evento activo: --</p>
+
+            <div class="table-controls" aria-label="Búsqueda y filtros">
+                <div class="table-search-wrap">
+                    <label class="table-search-label" for="dashboard-search">Buscar invitado</label>
+                    <input
+                        type="search"
+                        id="dashboard-search"
+                        class="table-search-input"
+                        placeholder="Escribe un nombre..."
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="table-actions" aria-label="Acciones y filtros">
+                    <div class="table-actions-row table-actions-row-top" role="tablist" aria-label="Acciones principales y todos">
+                        <button type="button" id="dashboard-clear" class="table-clear-btn">Limpiar</button>
+                        <button type="button" id="dashboard-export" class="table-export-btn">Exportar CSV</button>
+                        <button type="button" class="filter-chip is-active" data-filter="todos" role="tab" aria-selected="true">Todos</button>
+                    </div>
+                    <div class="table-actions-row table-actions-row-bottom" role="tablist" aria-label="Filtrar confirmaciones">
+                        <button type="button" class="filter-chip" data-filter="si" role="tab" aria-selected="false">Confirmados</button>
+                        <button type="button" class="filter-chip" data-filter="no" role="tab" aria-selected="false">No asistirán</button>
+                        <button type="button" class="filter-chip" data-filter="pendiente" role="tab" aria-selected="false">Pendientes</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="confirmations-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Pases asignados</th>
+                            <th>Respuesta</th>
+                            <th>Cantidad confirmada</th>
+                            <th>Fecha de confirmación</th>
+                        </tr>
+                    </thead>
+                    <tbody id="confirmations-table-body"></tbody>
+                </table>
+            </div>
+
+            <div id="confirmations-mobile-list" class="confirmations-mobile-list" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>

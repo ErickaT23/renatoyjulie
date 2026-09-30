@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin RSVP</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #ffffff;
+            --surface-soft: #fbf9fc;
+            --text: #111111;
+            --text-soft: #6a6470;
+            --line: #ece7f1;
+            --line-strong: #ddd3e8;
+
+            --brand-purple: #6c2bd9;
+            --brand-orange: #ff7a1a;
+            --brand-rose: #d6a0b5;
+            --brand-mocha: #9b7a67;
+
+            --danger: #e53935;
+            --danger-dark: #c62828;
+
+            --shadow-soft: 0 10px 30px rgba(30, 10, 50, 0.08);
+            --shadow-card: 0 8px 18px rgba(20, 20, 30, 0.06);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 9px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.42;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        .wrap {
+            width: min(1180px, calc(100% - 2.2rem));
+            margin: 0 auto;
+            padding: 1.5rem 0 2.8rem;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .header {
+            padding: 1.4rem 1.4rem 1.1rem;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(180deg, #ffffff 0%, #fdfbff 100%);
+            text-align: center;
+        }
+
+        .title {
+            margin: 0;
+            color: var(--text);
+            font-size: clamp(1.35rem, 2vw, 1.7rem);
+            font-weight: 800;
+            letter-spacing: -0.01em;
+        }
+
+        .subtitle {
+            margin: 0.42rem 0 0;
+            color: var(--text-soft);
+            font-size: 0.88rem;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            max-width: 100%;
+            word-break: break-word;
+        }
+
+        .subtitle strong {
+            color: var(--brand-mocha);
+            font-weight: 700;
+            background: #f6efe9;
+            border: 1px solid #e8dbd0;
+            border-radius: 999px;
+            padding: 0.1rem 0.45rem;
+            line-height: 1.2;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.9rem;
+            padding: 1.1rem 1.4rem;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            padding: 0.9rem 0.95rem;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--brand-purple);
+        }
+
+        .card:nth-child(2)::before {
+            background: var(--brand-orange);
+        }
+
+        .card:nth-child(3)::before {
+            background: var(--brand-rose);
+        }
+
+        .card:nth-child(4)::before {
+            background: var(--brand-mocha);
+        }
+
+        .card:nth-child(5)::before {
+            background: var(--brand-purple);
+        }
+
+        .card-label {
+            margin: 0;
+            font-size: 0.7rem;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+        }
+
+        .card-value {
+            margin: 0.52rem 0 0;
+            font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.015em;
+        }
+
+        .table-head {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.9rem;
+            padding: 0.2rem 1.4rem 0.95rem;
+        }
+
+        .table-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .actions-col-head,
+        .actions-cell {
+            text-align: center;
+        }
+
+        .actions-cell {
+            vertical-align: middle;
+        }
+
+        .table-title {
+            margin: 0;
+            font-size: 1.08rem;
+            color: var(--text);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-align: center;
+        }
+
+        .btn {
+            border: 1px solid #d8c6fb;
+            background: #f5eeff;
+            color: #5f2cc3;
+            border-radius: 10px;
+            padding: 0.6rem 0.9rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 700;
+            min-height: 40px;
+            transition: transform 0.16s ease, box-shadow 0.2s ease, filter 0.2s ease;
+            box-shadow: 0 6px 12px rgba(108, 43, 217, 0.16);
+        }
+
+        .btn:hover {
+            filter: brightness(0.97);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: #fff8de;
+            color: #9a6b00;
+            border-color: #efd98f;
+            box-shadow: 0 6px 12px rgba(196, 146, 15, 0.16);
+        }
+
+        .btn-add {
+            background: #fff8de;
+            color: #9a6b00;
+            border-color: #efd98f;
+            box-shadow: 0 6px 12px rgba(196, 146, 15, 0.16);
+        }
+
+        .btn-success {
+            background: #eefaf1;
+            color: #1f7a3f;
+            border-color: #b7e4c7;
+            box-shadow: 0 6px 12px rgba(52, 168, 83, 0.15);
+        }
+
+        .btn-action {
+            background: #fff2e5;
+            color: #a64a00;
+            border-color: #ffc997;
+            box-shadow: 0 6px 12px rgba(255, 138, 0, 0.24);
+        }
+
+        .btn-info {
+            background: #eaf4ff;
+            color: #1f5f9a;
+            border-color: #b9daf8;
+            box-shadow: 0 6px 12px rgba(64, 139, 226, 0.18);
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .table-wrap {
+            padding: 0 1.4rem 1.4rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-color: #d4c4ee #f4eefb;
+        }
+
+        .mobile-confirmations {
+            display: none;
+            padding: 0 1.4rem 1.4rem;
+        }
+
+        table {
+            width: 100%;
+            min-width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #fff;
+            table-layout: fixed;
+        }
+
+        thead th {
+            background: linear-gradient(180deg, #f8f5fc 0%, #f2ecf9 100%);
+            color: #2f2442;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: center;
+            padding: 0.76rem;
+            border-bottom: 1px solid var(--line-strong);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            white-space: normal;
+            line-height: 1.2;
+        }
+
+        thead th:nth-child(1), tbody td:nth-child(1) { width: 9%; }
+        thead th:nth-child(2), tbody td:nth-child(2) { width: 24%; }
+        thead th:nth-child(3), tbody td:nth-child(3) { width: 9%; }
+        thead th:nth-child(4), tbody td:nth-child(4) { width: 14%; }
+        thead th:nth-child(5), tbody td:nth-child(5) { width: 12%; }
+        thead th:nth-child(6), tbody td:nth-child(6) { width: 14%; }
+        thead th:nth-child(7), tbody td:nth-child(7) { width: 18%; }
+
+        tbody td {
+            padding: 0.94rem 0.78rem;
+            border-bottom: 1px solid var(--line);
+            font-size: 0.88rem;
+            vertical-align: middle;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            text-align: center;
+        }
+
+        tbody td:first-child {
+            min-width: 70px;
+            white-space: nowrap;
+        }
+
+        tbody td:nth-child(2) {
+            min-width: 120px;
+        }
+
+        .id-cell {
+            font-size: 0.72rem;
+            color: var(--text-soft);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            letter-spacing: 0.02em;
+        }
+
+        .guest-name-main {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text);
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            line-height: 1.25;
+            margin: 0 auto;
+            max-width: 100%;
+        }
+
+        .guest-inactive-badge {
+            display: inline-block;
+            margin-top: 0.28rem;
+            padding: 0.14rem 0.44rem;
+            border-radius: 999px;
+            border: 1px solid #d9d9d9;
+            background: #f3f3f3;
+            color: #7f7f7f;
+            font-size: 0.68rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            padding: 0.18rem 0.56rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .status-badge--yes {
+            background: #e8f7ee;
+            color: #1f7a3f;
+            border-color: #b7e4c7;
+        }
+
+        .status-badge--no {
+            background: #feecec;
+            color: #b3261e;
+            border-color: #f2b7b5;
+        }
+
+        .status-badge--pending {
+            background: #fff8de;
+            color: #8e6a00;
+            border-color: #efd98f;
+        }
+
+        .guest-id-sub {
+            margin-top: 0.2rem;
+            font-size: 0.72rem;
+            color: var(--text-soft);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        .date-cell {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            white-space: nowrap;
+        }
+
+        .date-main {
+            display: block;
+            font-weight: 600;
+            color: #2f2442;
+            line-height: 1.2;
+        }
+
+        .date-sub {
+            display: block;
+            margin-top: 0.15rem;
+            font-size: 0.72rem;
+            color: var(--text-soft);
+            line-height: 1.2;
+        }
+
+        tr.actions-row td {
+            padding-top: 0.45rem;
+            padding-bottom: 0.95rem;
+            border-bottom: 1px solid var(--line);
+            background: #fff;
+        }
+
+        tr.actions-row.row-inactive td {
+            background: #f9f5fb;
+        }
+
+        tbody tr:hover td {
+            background: #fcfafe;
+        }
+
+        tbody tr.row-inactive td {
+            background: #f3f3f3;
+            color: #7e7e7e;
+        }
+
+        tbody tr.row-inactive .guest-name-main,
+        tbody tr.row-inactive .id-cell,
+        tbody tr.row-inactive .date-main,
+        tbody tr.row-inactive .date-sub,
+        tbody tr.row-inactive .tag-muted {
+            color: #7e7e7e;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
+            margin: 0.42rem 1.4rem 0;
+            color: var(--text-soft);
+            font-size: 0.85rem;
+        }
+
+        .invite-form-wrap {
+            margin: 0 1.4rem 1rem;
+            padding: 1rem;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            background: var(--surface-soft);
+        }
+
+        .invite-form-grid {
+            display: grid;
+            grid-template-columns: minmax(220px, 1.5fr) 120px auto;
+            gap: 0.72rem;
+            align-items: end;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .form-field label {
+            font-size: 0.75rem;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 700;
+        }
+
+        .form-field input[type="text"],
+        .form-field input[type="number"] {
+            border: 1px solid var(--line-strong);
+            border-radius: 10px;
+            padding: 0.56rem 0.65rem;
+            font-size: 0.9rem;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-field input[type="text"]:focus,
+        .form-field input[type="number"]:focus,
+        .inline-input:focus {
+            border-color: rgba(108, 43, 217, 0.52);
+            box-shadow: 0 0 0 3px rgba(108, 43, 217, 0.12);
+        }
+
+        .check-field {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.88rem;
+            color: var(--text);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+            align-items: center;
+        }
+
+        .form-msg {
+            margin: 0;
+            font-size: 0.82rem;
+            color: var(--text-soft);
+        }
+
+        .inline-input {
+            width: 100%;
+            border: 1px solid var(--line-strong);
+            border-radius: 8px;
+            padding: 0.44rem 0.55rem;
+            font-size: 0.86rem;
+            background: #fff;
+        }
+
+        .row-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.28rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .row-actions-desktop {
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+            max-width: 160px;
+            margin: 0 auto;
+        }
+
+        .row-actions-mobile {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            width: 100%;
+            gap: 0.4rem;
+        }
+
+        .row-actions-mobile.row-actions--inactive {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .row-actions-mobile .inactive-legend {
+            grid-column: 1 / -1;
+            margin-bottom: 0;
+        }
+
+        .row-actions-mobile .btn-mini {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .inactive-legend {
+            width: 100%;
+            text-align: left;
+            font-size: 0.68rem;
+            color: #8a8a8a;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.12rem;
+        }
+
+        .btn-mini {
+            border: 1px solid #d8c6fb;
+            background: #f5eeff;
+            color: #5f2cc3;
+            border-radius: 8px;
+            padding: 0.34rem 0.45rem;
+            font-size: 0.69rem;
+            cursor: pointer;
+            font-weight: 700;
+            min-height: 30px;
+            transition: transform 0.15s ease, filter 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-mini:hover {
+            transform: translateY(-1px);
+            filter: brightness(0.98);
+        }
+
+        .btn-mini-primary {
+            border-color: #d8c6fb;
+            background: #f5eeff;
+            color: #5f2cc3;
+        }
+
+        .btn-mini-success {
+            border-color: #b7e4c7;
+            background: #eefaf1;
+            color: #1f7a3f;
+        }
+
+        .btn-mini-success:hover {
+            background: #e3f5e8;
+            filter: brightness(0.98);
+        }
+
+        .btn-mini-secondary {
+            border-color: #d8c6fb;
+            background: #f5eeff;
+            color: #5f2cc3;
+        }
+
+        .btn-mini-action {
+            border-color: #ffc997;
+            background: #fff2e5;
+            color: #a64a00;
+        }
+
+        .btn-mini-danger {
+            border-color: #f2b7b5;
+            background: #feecec;
+            color: #b3261e;
+        }
+
+        .btn-mini-danger:hover {
+            filter: brightness(0.98);
+            background: #fde2e1;
+        }
+
+        .row-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.78rem;
+            color: var(--text-soft);
+            margin-right: 0.25rem;
+        }
+
+        .tag-muted {
+            display: inline-block;
+            margin-left: 0.35rem;
+            font-size: 0.72rem;
+            color: var(--text-soft);
+        }
+
+        tbody tr.row-inactive .btn-mini {
+            border-color: #d8d8d8;
+            background: #f1f1f1;
+            color: #8d8d8d;
+            box-shadow: none;
+        }
+
+        tbody tr.row-inactive .btn-mini:hover {
+            transform: none;
+            filter: none;
+            background: #ededed;
+        }
+
+        tbody tr.row-inactive .btn-mini-primary {
+            border-color: #d8c6fb;
+            background: #f5eeff;
+            color: #5f2cc3;
+        }
+
+        tbody tr.row-inactive .btn-mini-primary:hover {
+            transform: translateY(-1px);
+            filter: brightness(0.97);
+        }
+
+        .restricted {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .restricted h2 {
+            margin: 0;
+            color: var(--brand-purple);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .qr-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 17, 17, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 999;
+        }
+
+        .qr-card {
+            width: min(360px, 100%);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .qr-title {
+            margin: 0;
+            font-size: 0.98rem;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .qr-subtitle {
+            margin: 0.3rem 0 0.8rem;
+            font-size: 0.82rem;
+            color: var(--text-soft);
+            word-break: break-word;
+        }
+
+        .qr-box {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .qr-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.55rem;
+            margin-top: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .mobile-confirmations-empty {
+            border: 1px dashed var(--line-strong);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--text-soft);
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.86rem;
+        }
+
+        .guest-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 6px 16px rgba(25, 18, 40, 0.06);
+            padding: 1rem;
+            margin-bottom: 0.72rem;
+        }
+
+        .guest-card.inactive {
+            background: #f6f6f6;
+            border-color: #e2e2e2;
+        }
+
+        .guest-card-id {
+            font-size: 0.7rem;
+            color: var(--text-soft);
+            letter-spacing: 0.04em;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            margin-bottom: 0.22rem;
+        }
+
+        .guest-card-name {
+            margin: 0;
+            font-size: 1.02rem;
+            font-weight: 700;
+            line-height: 1.26;
+            color: var(--text);
+            word-break: break-word;
+        }
+
+        .guest-card-state {
+            margin-top: 0.45rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.42rem;
+            align-items: center;
+        }
+
+        .guest-card-meta {
+            margin-top: 0.72rem;
+            display: grid;
+            gap: 0.36rem;
+        }
+
+        .guest-card-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.84rem;
+            color: #5f5a66;
+        }
+
+        .guest-card-line strong {
+            color: #2f2442;
+            font-weight: 600;
+        }
+
+        .guest-card-actions {
+            margin-top: 0.86rem;
+        }
+
+        @media (max-width: 1024px) {
+            .wrap {
+                width: min(1180px, calc(100% - 1.4rem));
+                padding-top: 1rem;
+            }
+
+            .metrics {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .header {
+                padding: 1.2rem 1.1rem 0.95rem;
+            }
+
+            .metrics {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
+
+            .table-head {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .table-actions {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.55rem;
+            }
+
+            .btn,
+            .btn-secondary,
+            .btn-action {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .table-wrap {
+                padding-bottom: 1.1rem;
+            }
+
+            table {
+                min-width: 100%;
+            }
+
+            thead th,
+            tbody td {
+                padding: 0.62rem;
+                font-size: 0.8rem;
+            }
+
+            thead th {
+                font-size: 0.66rem;
+                letter-spacing: 0.05em;
+            }
+
+            .btn-mini {
+                font-size: 0.66rem;
+                min-height: 28px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .actions-col-head {
+                display: none;
+            }
+
+            .table-wrap {
+                display: none;
+            }
+
+            .mobile-confirmations {
+                display: block;
+            }
+
+            .row-actions-mobile {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+
+            .row-actions-mobile.row-actions--inactive {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .wrap {
+                width: calc(100% - 1rem);
+                padding-top: 0.8rem;
+                padding-bottom: 1.8rem;
+            }
+
+            .header {
+                padding: 1.1rem 0.95rem 0.9rem;
+            }
+
+            .title {
+                font-size: 1.2rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+            }
+
+            .metrics,
+            .table-head,
+            .table-wrap,
+            .mobile-confirmations,
+            .invite-form-wrap,
+            .status {
+                padding-left: 0.95rem;
+                padding-right: 0.95rem;
+            }
+
+            .invite-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 0.8rem 0.85rem;
+            }
+
+            .card-value {
+                font-size: 1.55rem;
+            }
+
+            .table-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .status {
+                margin-top: 0.3rem;
+                font-size: 0.8rem;
+            }
+
+            .row-actions { gap: 0.25rem; }
+
+            .btn-mini {
+                font-size: 0.62rem;
+                min-height: 26px;
+                padding: 0.3rem 0.36rem;
+                width: auto;
+                min-width: 86px;
+            }
+
+            .date-cell {
+                font-size: 0.68rem;
+            }
+
+            .date-sub {
+                font-size: 0.64rem;
+            }
+
+            .guest-card {
+                padding: 0.9rem;
+                border-radius: 12px;
+            }
+
+            .guest-card-name {
+                font-size: 0.95rem;
+            }
+
+            .guest-card-line {
+                font-size: 0.8rem;
+            }
+
+            .qr-card {
+                padding: 0.85rem;
+            }
+
+            .qr-box {
+                width: 190px;
+                height: 190px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .wrap {
+                width: calc(100% - 0.55rem);
+            }
+
+            .header,
+            .metrics,
+            .table-head,
+            .table-wrap,
+            .mobile-confirmations,
+            .invite-form-wrap,
+            .status {
+                padding-left: 0.72rem;
+                padding-right: 0.72rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+            }
+
+            .table-title {
+                font-size: 1rem;
+            }
+
+            .btn-mini {
+                width: auto;
+                min-width: 74px;
+            }
+
+            .inactive-legend {
+                text-align: center;
+                justify-self: center;
+            }
+
+            .actions-col-head { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <section id="restricted" class="panel restricted hidden">
+            <h2>Acceso restringido</h2>
+            <p>La clave de administrador es inválida.</p>
+        </section>
+
+        <section id="admin-app" class="panel hidden">
+            <header class="header">
+                <h1 class="title">Panel Administrador RSVP</h1>
+                <p class="subtitle">Evento activo: <strong id="active-event-id">--</strong></p>
+            </header>
+
+            <div class="metrics">
+                <article class="card">
+                    <p class="card-label">Total invitados</p>
+                    <p class="card-value" id="metric-total">0</p>
+                </article>
+                <article class="card">
+                    <p class="card-label">Confirmados SI</p>
+                    <p class="card-value" id="metric-yes">0</p>
+                </article>
+                <article class="card">
+                    <p class="card-label">Confirmados NO</p>
+                    <p class="card-value" id="metric-no">0</p>
+                </article>
+                <article class="card">
+                    <p class="card-label">Pendientes</p>
+                    <p class="card-value" id="metric-pending">0</p>
+                </article>
+                <article class="card">
+                    <p class="card-label">Personas confirmadas</p>
+                    <p class="card-value" id="metric-people">0</p>
+                </article>
+            </div>
+
+            <div class="table-head">
+                <h2 class="table-title">Confirmaciones</h2>
+                <div class="table-actions">
+                    <button id="btn-toggle-invite-form" class="btn btn-add" type="button">Agregar invitado</button>
+                    <button id="btn-copy-all-links" class="btn btn-success" type="button">Copiar todos los links</button>
+                    <button id="btn-download-all-qrs" class="btn btn-action" type="button">Descargar todos los QR</button>
+                    <button id="btn-export-csv" class="btn btn-info" type="button">Exportar CSV</button>
+                </div>
+            </div>
+
+            <section id="invite-form-wrap" class="invite-form-wrap hidden" aria-label="Agregar invitado">
+                <form id="invite-form">
+                    <div class="invite-form-grid">
+                        <div class="form-field">
+                            <label for="invite-name">Nombre del invitado</label>
+                            <input id="invite-name" type="text" maxlength="120" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="invite-pases">Número de pases</label>
+                            <input id="invite-pases" type="number" min="1" step="1" value="1" required>
+                        </div>
+                        <label class="check-field" for="invite-active">
+                            <input id="invite-active" type="checkbox" checked>
+                            Activo
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button id="btn-save-invite" class="btn" type="submit">Guardar invitado</button>
+                        <button id="btn-cancel-invite" class="btn btn-secondary" type="button">Cancelar</button>
+                    </div>
+                    <p id="invite-form-msg" class="form-msg"></p>
+                </form>
+            </section>
+
+            <p class="status" id="admin-status">Inicializando panel...</p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Pases</th>
+                            <th>Estado</th>
+                            <th>Pases confirmados</th>
+                            <th>Fecha</th>
+                            <th class="actions-col-head">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="confirmations-body"></tbody>
+                </table>
+            </div>
+
+            <div id="mobile-confirmations" class="mobile-confirmations"></div>
+
+            <section id="qr-modal" class="qr-modal hidden" aria-label="QR de invitado">
+                <div class="qr-card">
+                    <h3 class="qr-title">Codigo QR del invitado</h3>
+                    <p id="qr-guest-name" class="qr-subtitle">--</p>
+                    <div id="qr-container" class="qr-box"></div>
+                    <div class="qr-actions">
+                        <button id="btn-download-qr" class="btn" type="button">Descargar QR</button>
+                        <button id="btn-close-qr" class="btn btn-secondary" type="button">Cerrar</button>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <script src="config.js"></script>
+    <script type="module" src="database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="admin.js" defer></script>
+</body>
+</html>
