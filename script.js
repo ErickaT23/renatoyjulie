@@ -266,7 +266,7 @@ function applyFooterConfig() {
 // ============================================
 const GuestConfig = {
     invitados: {
-        "1": { nombre: "María López", pases: 2 },
+        "1": { nombre: "Sr. y Sra. Ramos", pases: 2 },
         "2": { nombre: "Carlos Méndez", pases: 4 },
         "3": { nombre: "Andrea Ruiz", pases: 1 },
         "4": { nombre: "Familia García", pases: 6 },
@@ -365,6 +365,7 @@ const InvitadoApp = {
 
         lugaresEl.replaceChildren(
             document.createTextNode(parts[0] || ''),
+            document.createElement('br'),
             numeroEl,
             textoEl
         );
@@ -723,6 +724,9 @@ function initRSVP() {
     if (!form) return;
 
     function getSelectedResponse() {
+        const selectedChoices = Array.from(document.querySelectorAll('.rsvp-member-choice.is-selected'));
+        if (selectedChoices.some(function(choice) { return choice.dataset.response === 'si'; })) return 'si';
+        if (selectedChoices.some(function(choice) { return choice.dataset.response === 'no'; })) return 'no';
         if (responseYes && responseYes.checked) return 'si';
         if (responseNo && responseNo.checked) return 'no';
         return '';
@@ -806,7 +810,7 @@ function initRSVP() {
     function toggleGuestCountField() {
         if (!guestCountWrapper || !guestCountSelect) return;
 
-        const shouldShow = Boolean(responseYes && responseYes.checked);
+        const shouldShow = getSelectedResponse() === 'si';
         guestCountWrapper.style.display = shouldShow ? 'block' : 'none';
         guestCountSelect.disabled = !shouldShow || formLocked;
         guestCountSelect.required = shouldShow && !formLocked;
@@ -871,6 +875,19 @@ function initRSVP() {
     if (responseNo) {
         responseNo.addEventListener('change', toggleGuestCountField);
     }
+
+    document.querySelectorAll('.rsvp-member-choice').forEach(function(choice) {
+        choice.addEventListener('click', function() {
+            const response = choice.dataset.response;
+            if (response === 'si' && responseYes) responseYes.checked = true;
+            if (response === 'no' && responseNo) responseNo.checked = true;
+            choice.closest('.rsvp-member-item').querySelectorAll('.rsvp-member-choice').forEach(function(button) {
+                button.classList.toggle('is-selected', button === choice);
+            });
+            toggleGuestCountField();
+            if (!formLocked) form.requestSubmit();
+        });
+    });
 
     toggleGuestCountField();
 

@@ -533,6 +533,7 @@ button {
 }
 
 .invitado-lugares #numero-lugares {
+    font-family: var(--font-display);
     font-weight: 600;
     color: var(--color-black);
 }
@@ -1567,6 +1568,14 @@ button {
     text-align: center;
 }
 
+.dresscode-icon {
+    width: var(--lord-icon-size);
+    height: var(--lord-icon-size);
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 1.45rem;
+}
+
 .dresscode-title {
     margin-bottom: 1rem;
     line-height: 1;
@@ -2461,7 +2470,7 @@ button {
 
 .rsvp-title-resto {
     font-family: var(--font-editorial);
-    font-size: clamp(1.72rem, 5.4vw, 2.35rem);
+    font-size: 18px;
     letter-spacing: 0.03em;
 }
 
@@ -2530,6 +2539,80 @@ button {
     margin-bottom: 0.55rem;
     letter-spacing: 0.07em;
     text-transform: uppercase;
+}
+
+.rsvp-members {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.rsvp-member-item {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid rgba(139, 77, 77, 0.18);
+    background: rgba(255, 254, 250, 0.8);
+}
+
+.rsvp-member-copy {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.rsvp-member-copy strong {
+    font-family: var(--font-display) !important;
+    font-size: clamp(1.72rem, 5.4vw, 2.35rem);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1.02;
+    text-transform: uppercase;
+    background: linear-gradient(115deg, #00005a 0%, #233f6f 28%, #a9c1e5 50%, #49699d 66%, #00008b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.rsvp-member-copy span {
+    font-family: var(--font-editorial);
+    font-size: 17px;
+    line-height: 1.9;
+    background: var(--gradient-beige-elegante);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.rsvp-member-actions {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.rsvp-member-choice {
+    padding: 15px;
+    border: 1px solid rgba(35, 64, 111, 0.2);
+    background: var(--color-corinto);
+    color: var(--color-white);
+    font-family: var(--font-editorial);
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.rsvp-member-choice:hover {
+    background: var(--color-corinto-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(44, 36, 36, 0.18);
+}
+
+.rsvp-member-choice.is-selected {
+    background: var(--color-corinto);
+    color: var(--color-white);
+}
+
+.rsvp-response-group {
+    display: none;
 }
 
 .form-group input,
@@ -2836,7 +2919,7 @@ button {
 .gallery-auto-slider {
     position: relative;
     width: 100%;
-    height: clamp(420px, 70vh, 760px);
+    aspect-ratio: 2 / 3;
     overflow: hidden;
     box-shadow: 0 16px 44px rgba(44, 36, 36, 0.14);
     background: rgba(248, 245, 242, 0.7);
@@ -2857,7 +2940,7 @@ button {
 .gallery-auto-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     display: block;
 }
@@ -2868,7 +2951,7 @@ button {
     }
 
     .gallery-auto-slider {
-        height: clamp(320px, 58vh, 520px);
+        aspect-ratio: 2 / 3;
     }
 }
 
