@@ -849,10 +849,18 @@ function initRSVP() {
         }
 
         toggleGuestCountField();
-        showPermanentMessage(respuesta);
-        setFormLocked(true);
-        setConfirmedFormVisibility(true);
-        setIntroMessageForConfirmed(true);
+        const memberResponses = record && record.memberResponses ? record.memberResponses : {};
+        document.querySelectorAll('.rsvp-member-item').forEach(function(member) {
+            const response = memberResponses[member.dataset.memberId];
+            member.querySelectorAll('.rsvp-member-choice').forEach(function(choice) {
+                choice.classList.toggle('is-selected', choice.dataset.response === response);
+            });
+            const status = member.querySelector('.rsvp-member-status');
+            if (status) {
+                status.textContent = response === 'si' ? 'Asistencia confirmada' : response === 'no' ? 'No asistirá' : '';
+                status.className = 'rsvp-member-status' + (response === 'si' ? ' is-confirmed' : response === 'no' ? ' is-declined' : '');
+            }
+        });
     }
 
     async function getExistingConfirmation(guestId) {
@@ -884,6 +892,11 @@ function initRSVP() {
             choice.closest('.rsvp-member-item').querySelectorAll('.rsvp-member-choice').forEach(function(button) {
                 button.classList.toggle('is-selected', button === choice);
             });
+            const status = choice.closest('.rsvp-member-item').querySelector('.rsvp-member-status');
+            if (status) {
+                status.textContent = response === 'si' ? 'Asistencia confirmada' : 'No asistirá';
+                status.className = 'rsvp-member-status ' + (response === 'si' ? 'is-confirmed' : 'is-declined');
+            }
             toggleGuestCountField();
             if (!formLocked) form.requestSubmit();
         });
@@ -957,6 +970,10 @@ function initRSVP() {
             pasesAsignados: Math.max(1, Number(guestData.pases) || 1),
             respuesta,
             cantidadConfirmada: confirmedCount,
+            memberResponses: Object.fromEntries(Array.from(document.querySelectorAll('.rsvp-member-item')).map(function(member) {
+                const selected = member.querySelector('.rsvp-member-choice.is-selected');
+                return [member.dataset.memberId, selected ? selected.dataset.response : ''];
+            })),
             confirmado: true,
             fechaConfirmacion: Date.now()
         };

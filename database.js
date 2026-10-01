@@ -537,10 +537,9 @@ async function saveConfirmationWithTransaction(targetRef, record) {
   const transactionResult = await runTransaction(
     targetRef,
     function (currentData) {
-      if (currentData && currentData.confirmado) {
-        return;
-      }
-      return record;
+      return currentData && currentData.confirmado
+        ? Object.assign({}, currentData, record)
+        : record;
     },
     { applyLocally: false }
   );
@@ -584,6 +583,7 @@ async function saveConfirmation(arg1, arg2) {
     pasesAsignados: Number((payload && payload.pasesAsignados) || 0),
     respuesta: payload && payload.respuesta === "no" ? "no" : "si",
     cantidadConfirmada: Number((payload && payload.cantidadConfirmada) || 0),
+    memberResponses: (payload && payload.memberResponses) || {},
     confirmado: true,
     fechaConfirmacion: Number((payload && payload.fechaConfirmacion) || Date.now())
   };

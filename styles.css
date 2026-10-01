@@ -2561,7 +2561,7 @@ button {
 
 .rsvp-member-copy strong {
     font-family: var(--font-display) !important;
-    font-size: clamp(1.72rem, 5.4vw, 2.35rem);
+    font-size: 18px;
     font-weight: 400;
     letter-spacing: 0.03em;
     line-height: 1.02;
@@ -2604,6 +2604,21 @@ button {
     background: var(--color-corinto-dark);
     transform: translateY(-2px);
     box-shadow: 0 8px 18px rgba(44, 36, 36, 0.18);
+}
+
+.rsvp-member-status {
+    display: block;
+    font-family: var(--font-editorial);
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.rsvp-member-status.is-confirmed {
+    color: #49699d;
+}
+
+.rsvp-member-status.is-declined {
+    color: var(--color-corinto-dark);
 }
 
 .rsvp-member-choice.is-selected {
@@ -2649,6 +2664,10 @@ button {
     letter-spacing: 0.01em;
     line-height: 1.55;
     border-left: 2px solid rgba(139, 77, 77, 0.34);
+    background: linear-gradient(115deg, #00005a 0%, #233f6f 28%, #a9c1e5 50%, #49699d 66%, #00008b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .rsvp-response-group {
