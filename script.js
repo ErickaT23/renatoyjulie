@@ -355,6 +355,10 @@ const InvitadoApp = {
         }
 
         const parts = template.split('{pases}');
+        const suffix = String(parts[1] || '').replace(
+            /lugares especiales?/i,
+            Number(pases) === 1 ? 'lugar especial' : 'lugares especiales'
+        );
         const numeroEl = document.createElement('span');
         numeroEl.id = 'numero-lugares';
         numeroEl.textContent = String(pases);
@@ -367,7 +371,7 @@ const InvitadoApp = {
             document.createTextNode(parts[0] || ''),
             document.createElement('br'),
             numeroEl,
-            textoEl
+            Object.assign(textoEl, { textContent: suffix })
         );
     },
 
