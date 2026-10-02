@@ -17,7 +17,7 @@ const externalConfig = window.config || {};
 function resolveEventId() {
     const eventConfig = externalConfig.event || {};
     const eventIdParam = String(eventConfig.eventIdParam || 'eventId').trim() || 'eventId';
-    const defaultEventId = String(eventConfig.defaultEventId || 'renato-julie-2026').trim() || 'renato-julie-2026';
+    const defaultEventId = String(eventConfig.defaultEventId || 'julissa-renato-2026').trim() || 'julissa-renato-2026';
     const params = new URLSearchParams(window.location.search || '');
     const paramValue = String(params.get(eventIdParam) || '').trim();
     const eventId = paramValue || defaultEventId;
@@ -69,14 +69,14 @@ function createSiteConfig(remoteConfig) {
 
     return {
         seo: {
-            titulo: 'Renato & Julie | Boda 2026',
-            descripcion: 'Boda de Renato Salazar y Julie González - 21 de noviembre de 2026',
+            titulo: 'Julissa & Renato | Boda 2026',
+            descripcion: 'Boda de Julissa y Renato - 21 de noviembre de 2026',
             autor: 'Two Design',
             ...externalConfig.seo,
             ...normalizedRemoteConfig.seo
         },
         pareja: {
-            nombres: 'Renato & Julie',
+            nombres: 'Julissa & Renato',
             fecha: '21-11-2026',
             fechaVisible: '21.11.2026',
             ...externalConfig.pareja,
@@ -115,7 +115,7 @@ function createSiteConfig(remoteConfig) {
             ...normalizedRemoteConfig.textos
         },
         footer: {
-            hashtag: '#RenatoYJulie',
+            hashtag: '#JulissaYRenato',
             instagramUrl: '',
             facebookUrl: '',
             marcaTexto: 'Diseño',
@@ -265,13 +265,7 @@ function applyFooterConfig() {
 // CONFIGURACIÓN - Editar aquí los invitados
 // ============================================
 const GuestConfig = {
-    invitados: {
-        "1": { nombre: "Familia Valdez Molina", pases: 4, integrantes: ["Alejandro Valdez", "Camila Molina", "Isabela Valdez", "Tomás Valdez"] },
-        "2": { nombre: "Familia López Rivera", pases: 3, integrantes: ["Mauricio López", "Gabriela Rivera", "Daniel López"] },
-        "3": { nombre: "Sofía Morales", pases: 1, integrantes: ["Sofía Morales"] },
-        "4": { nombre: "Carlos y Elena Pérez", pases: 2, integrantes: ["Carlos Pérez", "Elena Pérez"] },
-        "5": { nombre: "Familia Castillo", pases: 4, integrantes: ["Roberto Castillo", "Patricia Castillo", "Lucía Castillo", "Mateo Castillo"] }
-    },
+    invitados: {},
     invitadoDefault: { nombre: "Invitado Especial", pases: 2 },
     paramId: 'id'
 };

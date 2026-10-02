@@ -857,6 +857,7 @@ async function createInvitado(arg1, arg2) {
     id,
     nombre,
     pases,
+    integrantes: Array.isArray(payload.integrantes) ? payload.integrantes : [],
     activo
   };
 
@@ -886,6 +887,7 @@ async function updateInvitado(arg1, arg2, arg3) {
     id: guestId,
     nombre,
     pases,
+    integrantes: Array.isArray(payload.integrantes) ? payload.integrantes : [],
     activo
   };
 

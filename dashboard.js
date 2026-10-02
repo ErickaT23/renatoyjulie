@@ -1,29 +1,12 @@
 import { subscribeToConfirmations, subscribeToInvitados } from "./database.js";
 
-const guestDirectorySeed = {
-    "1": { nombre: "Familia Valdez Molina", pases: 4, integrantes: ["Alejandro Valdez", "Camila Molina", "Isabela Valdez", "Tomás Valdez"] },
-    "2": { nombre: "Familia López Rivera", pases: 3, integrantes: ["Mauricio López", "Gabriela Rivera", "Daniel López"] },
-    "3": { nombre: "Sofía Morales", pases: 1, integrantes: ["Sofía Morales"] },
-    "4": { nombre: "Carlos y Elena Pérez", pases: 2, integrantes: ["Carlos Pérez", "Elena Pérez"] },
-    "5": { nombre: "Familia Castillo", pases: 4, integrantes: ["Roberto Castillo", "Patricia Castillo", "Lucía Castillo", "Mateo Castillo"] }
-};
-
-const guestDirectoriesByEvent = {
-    "renato-julie-2026": guestDirectorySeed
-};
-
-window.LocalGuestSeeds = {
-    ...(window.LocalGuestSeeds || {}),
-    ...guestDirectoriesByEvent
-};
-
 const VALID_FILTERS = new Set(["todos", "si", "no", "pendiente"]);
 
 function resolveDashboardEventContext() {
     const externalConfig = window.config || {};
     const eventConfig = externalConfig.event || {};
     const eventIdParam = String(eventConfig.eventIdParam || "eventId").trim() || "eventId";
-    const defaultEventId = String(eventConfig.defaultEventId || "renato-julie-2026").trim() || "renato-julie-2026";
+    const defaultEventId = String(eventConfig.defaultEventId || "julissa-renato-2026").trim() || "julissa-renato-2026";
     const params = new URLSearchParams(window.location.search || "");
     const fromQuery = String(params.get(eventIdParam) || "").trim();
     const fromWindow = String(
@@ -42,10 +25,6 @@ function resolveDashboardEventContext() {
     window.currentEventId = eventId;
 
     return context;
-}
-
-function getGuestDirectoryForEvent(eventId) {
-    return guestDirectoriesByEvent[eventId] || {};
 }
 
 function mapInvitadosToDirectory(invitados) {
@@ -471,11 +450,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const eventContext = resolveDashboardEventContext();
     const activeEventId = eventContext.eventId;
     const eventBadge = document.getElementById("dashboard-event-current");
+    const coupleName = document.getElementById("dashboard-couple-name");
+    const configuredNames = String(
+        window.config && window.config.pareja && window.config.pareja.nombres || ""
+    ).trim();
+    if (coupleName && configuredNames) {
+        coupleName.textContent = configuredNames;
+    }
     if (eventBadge) {
         eventBadge.textContent = "Evento activo: " + activeEventId;
     }
 
-    const fallbackGuestDirectory = getGuestDirectoryForEvent(activeEventId);
+    const fallbackGuestDirectory = {};
     let remoteGuestDirectory = {};
     let hasRemoteGuestSource = false;
     let confirmationsState = [];

@@ -33,7 +33,7 @@
             window.config
             && window.config.event
             && window.config.event.defaultEventId
-            || "renato-julie-2026"
+            || "julissa-renato-2026"
         ).trim();
 
         return queryEventId || defaultEventId;
@@ -1221,6 +1221,57 @@
         }
     }
 
+    async function importInvitadosFromTable(event) {
+        event.preventDefault();
+        const input = getEl("bulk-invite-data");
+        const message = getEl("bulk-invite-msg");
+        const text = String(input && input.value || "").trim();
+        if (!text || !state.db) return;
+
+        const groups = [];
+        let current = null;
+        text.split(/\r?\n/).forEach(function (line) {
+            const cells = line.split("\t").map(function (cell) { return String(cell || "").trim(); });
+            if (!cells[0] && !current) return;
+            if (cells[0]) {
+                current = { nombre: cells[0], integrantes: [], pases: Math.max(1, Number(cells[2]) || 1) };
+                groups.push(current);
+            }
+            if (current && cells[1]) current.integrantes.push(cells[1]);
+            if (current && cells[0] && cells[1] && cells[2]) current.pases = Math.max(1, Number(cells[2]) || 1);
+        });
+
+        const existingNames = new Set(Array.from(state.invitadosMap.values()).map(function (guest) {
+            return String(guest.nombre || "").trim().toLowerCase();
+        }));
+        const pending = groups.filter(function (group) {
+            return !existingNames.has(group.nombre.toLowerCase());
+        });
+        if (!pending.length) {
+            if (message) message.textContent = "No hay invitados nuevos para importar.";
+            return;
+        }
+
+        const nextId = getNextNumericGuestId();
+        try {
+            for (let index = 0; index < pending.length; index += 1) {
+                const group = pending[index];
+                await state.db.createInvitado(state.eventId, {
+                    id: String(nextId + index),
+                    nombre: group.nombre,
+                    pases: group.pases,
+                    integrantes: group.integrantes,
+                    activo: true
+                });
+            }
+            input.value = "";
+            if (message) message.textContent = "Importados " + pending.length + " invitados correctamente.";
+        } catch (error) {
+            console.error("Error importando invitados:", error);
+            if (message) message.textContent = "No se pudo completar la importación.";
+        }
+    }
+
     function refreshView() {
         const rows = buildRows();
         const metrics = calculateMetrics(rows);
@@ -1269,6 +1320,9 @@
         if (inviteForm) {
             inviteForm.addEventListener("submit", saveInvitadoFromForm);
         }
+
+        const bulkInviteForm = getEl("bulk-invite-form");
+        if (bulkInviteForm) bulkInviteForm.addEventListener("submit", importInvitadosFromTable);
 
         const closeQrBtn = getEl("btn-close-qr");
         if (closeQrBtn) {

@@ -1,6 +1,6 @@
 const config = {
     event: {
-        defaultEventId: "renato-julie-2026",
+        defaultEventId: "julissa-renato-2026",
         eventIdParam: "eventId",
         legacyFallback: {
             read: false,
@@ -8,15 +8,14 @@ const config = {
             subscribe: false
         }
     },
-
     seo: {
-        titulo: "Renato & Julie | Boda 2026",
-        descripcion: "Boda de Renato Salazar y Julie González - 21 de noviembre de 2026",
+        titulo: "Julissa & Renato | Boda 2026",
+        descripcion: "Boda de Julissa y Renato - 21 de noviembre de 2026",
         autor: "Two Design"
     },
 
     pareja: {
-        nombres: "Renato & Julie",
+        nombres: "Julissa & Renato",
         fecha: "21-11-2026",
         fechaVisible: "21.11.2026"
     },
@@ -25,7 +24,6 @@ const config = {
         titulo: "Nuestra Canción",
         archivo: "audio/nuestra-cancion.mp3"
     },
-
     evento: {
         ceremonia: {
             titulo: "Ceremonia",
@@ -50,7 +48,7 @@ const config = {
     },
 
     footer: {
-        hashtag: "#RenatoYJulie",
+        hashtag: "#JulissaYRenato",
         instagramUrl: "",
         facebookUrl: "",
         marcaTexto: "Diseño",
