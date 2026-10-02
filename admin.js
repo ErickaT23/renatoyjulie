@@ -90,10 +90,12 @@
         if (form) form.reset();
 
         const pasesInput = getEl("invite-pases");
+        const membersInput = getEl("invite-members");
         if (pasesInput) pasesInput.value = "1";
 
         const activeInput = getEl("invite-active");
         if (activeInput) activeInput.checked = true;
+        if (membersInput) membersInput.value = "";
 
         setInviteFormMessage("");
     }
@@ -1181,12 +1183,17 @@
 
         const nameInput = getEl("invite-name");
         const pasesInput = getEl("invite-pases");
+        const membersInput = getEl("invite-members");
         const activeInput = getEl("invite-active");
         const saveBtn = getEl("btn-save-invite");
 
         const nombre = String(nameInput && nameInput.value || "").trim();
         const pases = Number(pasesInput && pasesInput.value);
         const activo = Boolean(activeInput && activeInput.checked);
+        const integrantes = String(membersInput && membersInput.value || "")
+            .split(/\r?\n/)
+            .map(function (member) { return member.trim(); })
+            .filter(Boolean);
 
         if (!nombre) {
             setInviteFormMessage("El nombre es obligatorio.", true);
@@ -1202,6 +1209,7 @@
             id: createGuestId(),
             nombre,
             pases,
+            integrantes,
             activo
         };
 
