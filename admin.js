@@ -1321,8 +1321,6 @@
             inviteForm.addEventListener("submit", saveInvitadoFromForm);
         }
 
-        const bulkInviteForm = getEl("bulk-invite-form");
-        if (bulkInviteForm) bulkInviteForm.addEventListener("submit", importInvitadosFromTable);
 
         const closeQrBtn = getEl("btn-close-qr");
         if (closeQrBtn) {
