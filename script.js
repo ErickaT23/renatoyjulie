@@ -711,8 +711,8 @@ function initRSVP() {
     const guestCountWrapper = document.getElementById('guest-count-wrapper');
     const guestCountSelect = document.getElementById('guest-count');
     const confirmationMessages = {
-        si: 'Gracias por confirmar tu asistencia. Te vemos pronto.',
-        no: 'Lamentamos que no puedas acompañarnos, te extrañaremos.'
+        si: 'Gracias por acompañarnos, nos vemos pronto.',
+        no: 'Lamentamos que no podrás acompañarnos, vamos a extrañarte.'
     };
     const activeEventId = String(window.currentEventId || '').trim();
     let formLocked = false;
@@ -810,15 +810,9 @@ function initRSVP() {
     function toggleGuestCountField() {
         if (!guestCountWrapper || !guestCountSelect) return;
 
-        const shouldShow = getSelectedResponse() === 'si';
-        guestCountWrapper.style.display = shouldShow ? 'block' : 'none';
-        guestCountSelect.disabled = !shouldShow || formLocked;
-        guestCountSelect.required = shouldShow && !formLocked;
-
-        if (!shouldShow) {
-            const firstOption = guestCountSelect.options[0];
-            if (firstOption) guestCountSelect.value = firstOption.value;
-        }
+        guestCountWrapper.style.display = 'none';
+        guestCountSelect.disabled = true;
+        guestCountSelect.required = false;
     }
 
     function showPermanentMessage(respuesta) {
@@ -852,12 +846,18 @@ function initRSVP() {
         const memberResponses = record && record.memberResponses ? record.memberResponses : {};
         document.querySelectorAll('.rsvp-member-item').forEach(function(member) {
             const response = memberResponses[member.dataset.memberId];
+            const actions = member.querySelector('.rsvp-member-actions');
+            if (actions && response) actions.style.display = 'none';
+            const assignedPasses = member.querySelector('.rsvp-member-copy span');
+            if (assignedPasses && response === 'no') assignedPasses.style.display = 'none';
             member.querySelectorAll('.rsvp-member-choice').forEach(function(choice) {
                 choice.classList.toggle('is-selected', choice.dataset.response === response);
             });
             const status = member.querySelector('.rsvp-member-status');
             if (status) {
-                status.textContent = response === 'si' ? 'Asistencia confirmada' : response === 'no' ? 'No asistirá' : '';
+                status.textContent = response === 'si'
+                    ? confirmationMessages.si
+                    : response === 'no' ? confirmationMessages.no : '';
                 status.className = 'rsvp-member-status' + (response === 'si' ? ' is-confirmed' : response === 'no' ? ' is-declined' : '');
             }
         });
@@ -893,6 +893,8 @@ function initRSVP() {
                 button.classList.toggle('is-selected', button === choice);
             });
             const status = choice.closest('.rsvp-member-item').querySelector('.rsvp-member-status');
+            const assignedPasses = choice.closest('.rsvp-member-item').querySelector('.rsvp-member-copy span');
+            if (assignedPasses && response === 'no') assignedPasses.style.display = 'none';
             if (status) {
                 status.textContent = response === 'si' ? 'Asistencia confirmada' : 'No asistirá';
                 status.className = 'rsvp-member-status ' + (response === 'si' ? 'is-confirmed' : 'is-declined');
