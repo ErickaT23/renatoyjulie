@@ -335,6 +335,7 @@ body {
 }
 
 .table-wrapper {
+    display: none;
     overflow-x: auto;
     border: 1px solid rgba(0, 0, 90, 0.16);
     background: rgba(255, 255, 255, 0.7);
@@ -342,7 +343,7 @@ body {
 }
 
 .confirmations-mobile-list {
-    display: none;
+    display: block;
 }
 
 .confirmations-table {
