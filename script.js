@@ -718,6 +718,9 @@ function initRSVP() {
         si: 'Gracias por acompañarnos, nos vemos pronto.',
         no: 'Lamentamos que no podrás acompañarnos, vamos a extrañarte.'
     };
+    const RSVP_DEADLINE_UTC = Date.UTC(2026, 9, 18, 5, 59, 59, 999);
+    const RSVP_CLOSED_MESSAGE = 'Los extrañaremos y esperamos tener la oportunidad de compartir con ustedes en otra ocasión. Gracias por su comprensión y por acompañarnos con su cariño y buenos deseos.';
+    const rsvpClosed = Date.now() > RSVP_DEADLINE_UTC;
     const activeEventId = String(window.currentEventId || '').trim();
     let formLocked = false;
     let isCheckingStatus = false;
@@ -811,6 +814,25 @@ function initRSVP() {
         }
     }
 
+    function applyClosedState() {
+        if (!rsvpClosed) return;
+        if (introMessage) introMessage.textContent = RSVP_CLOSED_MESSAGE;
+        form.classList.add('is-closed');
+        form.querySelectorAll('.rsvp-member-actions').forEach(function(actions) {
+            actions.remove();
+        });
+        form.querySelectorAll('.rsvp-member-copy span').forEach(function(passes) {
+            passes.remove();
+        });
+        form.querySelectorAll('.rsvp-member-status').forEach(function(status) {
+            status.textContent = 'No indicó su confirmación';
+            status.className = 'rsvp-member-status is-pending';
+        });
+        form.querySelectorAll('input, select, textarea, button').forEach(function(control) {
+            control.disabled = true;
+        });
+    }
+
     function toggleGuestCountField() {
         if (!guestCountWrapper || !guestCountSelect) return;
 
@@ -890,6 +912,7 @@ function initRSVP() {
 
     document.querySelectorAll('.rsvp-member-choice').forEach(function(choice) {
         choice.addEventListener('click', function() {
+            if (rsvpClosed) return;
             const response = choice.dataset.response;
             if (response === 'si' && responseYes) responseYes.checked = true;
             if (response === 'no' && responseNo) responseNo.checked = true;
@@ -930,9 +953,11 @@ function initRSVP() {
         }));
     }
 
+    applyClosedState();
+
     form.addEventListener('click', function(event) {
         const choice = event.target.closest('.rsvp-member-choice');
-        if (!choice || formLocked) return;
+        if (!choice || formLocked || rsvpClosed) return;
         const member = choice.closest('.rsvp-member-item');
         member.querySelectorAll('.rsvp-member-choice').forEach(function(button) {
             button.classList.toggle('is-selected', button === choice);
@@ -967,7 +992,7 @@ function initRSVP() {
     
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        if (formLocked) return;
+        if (formLocked || rsvpClosed) return;
 
         if (isCheckingStatus) {
             showPopup('Estamos validando tu estado de confirmación. Intenta de nuevo en un momento.', true);

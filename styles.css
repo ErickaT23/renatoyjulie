@@ -2621,6 +2621,11 @@ button {
     color: var(--color-corinto-dark);
 }
 
+.rsvp-member-status.is-pending {
+    color: #6b7280;
+    font-style: italic;
+}
+
 .rsvp-member-choice.is-selected {
     background: var(--color-corinto);
     color: var(--color-white);
