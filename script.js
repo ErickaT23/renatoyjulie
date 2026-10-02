@@ -324,6 +324,7 @@ const InvitadoApp = {
                 id: String(remoteGuest.id || guestId || 'default'),
                 nombre: String(remoteGuest.nombre || '').trim() || String(GuestConfig.invitadoDefault.nombre || ''),
                 pases: Math.max(1, Number(remoteGuest.pases) || Number(GuestConfig.invitadoDefault.pases) || 1),
+                integrantes: Array.isArray(remoteGuest.integrantes) ? remoteGuest.integrantes : [],
                 activo: typeof remoteGuest.activo === 'undefined' ? true : Boolean(remoteGuest.activo)
             };
         } catch (error) {
