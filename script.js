@@ -266,11 +266,11 @@ function applyFooterConfig() {
 // ============================================
 const GuestConfig = {
     invitados: {
-        "1": { nombre: "Sr. y Sra. Ramos", pases: 2 },
-        "2": { nombre: "Carlos Méndez", pases: 4 },
-        "3": { nombre: "Andrea Ruiz", pases: 1 },
-        "4": { nombre: "Familia García", pases: 6 },
-        "5": { nombre: "Pedro Sánchez", pases: 2 }
+        "1": { nombre: "Familia Valdez Molina", pases: 4, integrantes: ["Alejandro Valdez", "Camila Molina", "Isabela Valdez", "Tomás Valdez"] },
+        "2": { nombre: "Familia López Rivera", pases: 3, integrantes: ["Mauricio López", "Gabriela Rivera", "Daniel López"] },
+        "3": { nombre: "Sofía Morales", pases: 1, integrantes: ["Sofía Morales"] },
+        "4": { nombre: "Carlos y Elena Pérez", pases: 2, integrantes: ["Carlos Pérez", "Elena Pérez"] },
+        "5": { nombre: "Familia Castillo", pases: 4, integrantes: ["Roberto Castillo", "Patricia Castillo", "Lucía Castillo", "Mateo Castillo"] }
     },
     invitadoDefault: { nombre: "Invitado Especial", pases: 2 },
     paramId: 'id'
@@ -304,6 +304,7 @@ const InvitadoApp = {
                 id: safeId,
                 nombre: String(invitado.nombre || ''),
                 pases: Math.max(1, Number(invitado.pases) || 1),
+                integrantes: Array.isArray(invitado.integrantes) ? invitado.integrantes : [],
                 activo: true
             };
         }
@@ -340,7 +341,11 @@ const InvitadoApp = {
     renderSection() {
         const nombreEl = document.getElementById('nombre-invitado');
 
-        if (nombreEl) nombreEl.textContent = this.data.nombre;
+        if (nombreEl) {
+            nombreEl.textContent = this.data.nombre;
+            nombreEl.style.height = 'auto';
+            nombreEl.style.height = nombreEl.scrollHeight + 'px';
+        }
         this.renderPasesText(this.data.pases);
     },
 
@@ -907,6 +912,37 @@ function initRSVP() {
     const guestData = InvitadoApp.getData() || {};
     const guestId = String(guestData.id || 'default');
 
+    const membersContainer = document.querySelector('.rsvp-members');
+    const memberNames = Array.isArray(guestData.integrantes) && guestData.integrantes.length
+        ? guestData.integrantes
+        : [guestData.nombre || 'Invitado'];
+    if (membersContainer) {
+        membersContainer.replaceChildren(...memberNames.map(function(name, index) {
+            const item = document.createElement('div');
+            item.className = 'rsvp-member-item';
+            item.dataset.memberId = 'member-' + (index + 1);
+            item.innerHTML = '<div class="rsvp-member-copy"><strong></strong><span>1 pase asignado</span></div>'
+                + '<div class="rsvp-member-actions"><button type="button" class="rsvp-member-choice" data-response="si">Asistiré</button><button type="button" class="rsvp-member-choice" data-response="no">No asistiré</button></div>'
+                + '<span class="rsvp-member-status"></span>';
+            item.querySelector('strong').textContent = name;
+            return item;
+        }));
+    }
+
+    form.addEventListener('click', function(event) {
+        const choice = event.target.closest('.rsvp-member-choice');
+        if (!choice || formLocked) return;
+        const member = choice.closest('.rsvp-member-item');
+        member.querySelectorAll('.rsvp-member-choice').forEach(function(button) {
+            button.classList.toggle('is-selected', button === choice);
+        });
+        const status = member.querySelector('.rsvp-member-status');
+        const response = choice.dataset.response;
+        status.textContent = response === 'si' ? 'Asistencia confirmada' : 'No asistirá';
+        status.className = 'rsvp-member-status ' + (response === 'si' ? 'is-confirmed' : 'is-declined');
+        form.requestSubmit();
+    });
+
     async function checkConfirmedStatusOnLoad() {
         isCheckingStatus = true;
         if (submitBtn) submitBtn.disabled = true;
@@ -974,6 +1010,9 @@ function initRSVP() {
                 const selected = member.querySelector('.rsvp-member-choice.is-selected');
                 return [member.dataset.memberId, selected ? selected.dataset.response : ''];
             })),
+            integrantes: Array.from(document.querySelectorAll('.rsvp-member-copy strong')).map(function(member) {
+                return member.textContent.trim();
+            }),
             confirmado: true,
             fechaConfirmacion: Date.now()
         };

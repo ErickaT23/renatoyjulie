@@ -1,11 +1,11 @@
 import { subscribeToConfirmations, subscribeToInvitados } from "./database.js";
 
 const guestDirectorySeed = {
-    "1": { nombre: "Sr. y Sra. Ramos", pases: 2 },
-    "2": { nombre: "Carlos Méndez", pases: 4 },
-    "3": { nombre: "Andrea Ruiz", pases: 1 },
-    "4": { nombre: "Familia García", pases: 6 },
-    "5": { nombre: "Pedro Sánchez", pases: 2 }
+    "1": { nombre: "Familia Valdez Molina", pases: 4, integrantes: ["Alejandro Valdez", "Camila Molina", "Isabela Valdez", "Tomás Valdez"] },
+    "2": { nombre: "Familia López Rivera", pases: 3, integrantes: ["Mauricio López", "Gabriela Rivera", "Daniel López"] },
+    "3": { nombre: "Sofía Morales", pases: 1, integrantes: ["Sofía Morales"] },
+    "4": { nombre: "Carlos y Elena Pérez", pases: 2, integrantes: ["Carlos Pérez", "Elena Pérez"] },
+    "5": { nombre: "Familia Castillo", pases: 4, integrantes: ["Roberto Castillo", "Patricia Castillo", "Lucía Castillo", "Mateo Castillo"] }
 };
 
 const guestDirectoriesByEvent = {
@@ -94,6 +94,7 @@ function normalizeConfirmation(record) {
             ? Math.max(0, Number(record && record.cantidadConfirmada) || 0)
             : 0,
         fechaConfirmacion: Number(record && record.fechaConfirmacion) || null
+        ,integrantes: Array.isArray(record && record.integrantes) ? record.integrantes : []
     };
 }
 
@@ -120,6 +121,7 @@ function buildRows(confirmations, guestDirectory) {
                 respuesta: "pendiente",
                 cantidadConfirmada: 0,
                 fechaConfirmacion: null
+                ,integrantes: Array.isArray(guest.integrantes) ? guest.integrantes : []
             });
             return;
         }
@@ -128,6 +130,7 @@ function buildRows(confirmations, guestDirectory) {
             ...confirmation,
             nombre: confirmation.nombre || String(guest.nombre || ""),
             pasesAsignados: confirmation.pasesAsignados || Math.max(0, Number(guest.pases) || 0)
+            ,integrantes: confirmation.integrantes.length ? confirmation.integrantes : (guest.integrantes || [])
         });
     });
 
@@ -432,7 +435,28 @@ function renderMobileCards(rows, emptyMessage) {
         timeValue.textContent = dateParts.time;
         lineTime.append(timeLabel, timeValue);
 
-        details.append(lineAssigned, lineConfirmed, lineDate, lineTime);
+        const members = row.integrantes || [];
+        const memberLine = document.createElement("div");
+        memberLine.className = "confirmation-card-line confirmation-card-line--stacked";
+        const memberLabel = document.createElement("span");
+        memberLabel.textContent = "Integrantes";
+        const memberValue = document.createElement("strong");
+        memberValue.textContent = members.length
+            ? members.map((name) => name + " (1 pase)").join(", ")
+            : "--";
+        memberLine.append(memberLabel, memberValue);
+
+        const attendingLine = document.createElement("div");
+        attendingLine.className = "confirmation-card-line confirmation-card-line--stacked";
+        const attendingLabel = document.createElement("span");
+        attendingLabel.textContent = "Asistencia confirmada";
+        const attendingValue = document.createElement("strong");
+        attendingValue.textContent = responseValue === "si" && members.length
+            ? members.map((name) => name + " (1 pase)").join(", ")
+            : "--";
+        attendingLine.append(attendingLabel, attendingValue);
+
+        details.append(lineAssigned, lineConfirmed, lineDate, lineTime, memberLine, attendingLine);
         card.append(nameEl, statusWrap, details);
         mobileList.appendChild(card);
     });

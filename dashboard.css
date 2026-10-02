@@ -563,6 +563,17 @@ body {
     letter-spacing: 0.01em;
 }
 
+.confirmation-card-line--stacked {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.confirmation-card-line--stacked strong {
+    line-height: 1.5;
+    text-align: left;
+}
+
 .confirmation-card-line strong {
     color: var(--color-ink);
     font-weight: 500;

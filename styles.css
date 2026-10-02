@@ -2631,7 +2631,8 @@ button {
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 0.86rem 0.9rem;
     font-family: var(--font-body);
@@ -2645,7 +2646,8 @@ button {
 }
 
 .form-group input:focus,
-.form-group select:focus {
+.form-group select:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: rgba(139, 77, 77, 0.5);
     box-shadow: 0 0 0 2px rgba(139, 77, 77, 0.08);
@@ -2658,6 +2660,15 @@ button {
     cursor: default;
 }
 
+.form-group textarea[readonly] {
+    background: linear-gradient(135deg, rgba(255, 254, 250, 0.92) 0%, rgba(248, 245, 242, 0.86) 100%);
+    color: rgba(92, 58, 58, 0.96);
+    border-color: rgba(139, 77, 77, 0.18);
+    cursor: default;
+    resize: none;
+    overflow: hidden;
+}
+
 #rsvp-name {
     font-family: var(--font-editorial);
     font-size: 1rem;
@@ -2668,6 +2679,8 @@ button {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    height: auto;
+    overflow-wrap: anywhere;
 }
 
 .rsvp-response-group {

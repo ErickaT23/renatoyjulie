@@ -584,6 +584,7 @@ async function saveConfirmation(arg1, arg2) {
     respuesta: payload && payload.respuesta === "no" ? "no" : "si",
     cantidadConfirmada: Number((payload && payload.cantidadConfirmada) || 0),
     memberResponses: (payload && payload.memberResponses) || {},
+    integrantes: Array.isArray(payload && payload.integrantes) ? payload.integrantes : [],
     confirmado: true,
     fechaConfirmacion: Number((payload && payload.fechaConfirmacion) || Date.now())
   };
