@@ -75,6 +75,9 @@ function normalizeConfirmation(record) {
             : 0,
         fechaConfirmacion: Number(record && record.fechaConfirmacion) || null
         ,integrantes: Array.isArray(record && record.integrantes) ? record.integrantes : []
+        ,memberResponses: record && record.memberResponses && typeof record.memberResponses === "object"
+            ? record.memberResponses
+            : {}
     };
 }
 
@@ -431,9 +434,15 @@ function renderMobileCards(rows, emptyMessage) {
         const attendingLabel = document.createElement("span");
         attendingLabel.textContent = "Asistencia confirmada";
         const attendingValue = document.createElement("strong");
-        attendingValue.textContent = responseValue === "si" && members.length
-            ? members.map((name) => name + " (1 pase)").join(", ")
-            : "--";
+        const confirmedMembers = members.filter((name, index) => {
+            const memberResponse = row.memberResponses && row.memberResponses["member-" + (index + 1)];
+            return memberResponse === "si";
+        });
+        attendingValue.textContent = responseValue === "no"
+            ? "No asistirá"
+            : confirmedMembers.length
+                ? confirmedMembers.map((name) => name + " (1 pase)").join(", ")
+                : "--";
         attendingLine.append(attendingLabel, attendingValue);
 
         details.append(lineAssigned, lineConfirmed, lineDate, lineTime, memberLine, attendingLine);
