@@ -43,7 +43,8 @@ function mapInvitadosToDirectory(invitados) {
 
         directory[id] = {
             nombre: String(invitado.nombre || "").trim() || "Invitado",
-            pases: Math.max(0, Number(invitado.pases) || 0)
+            pases: Math.max(0, Number(invitado.pases) || 0),
+            integrantes: Array.isArray(invitado.integrantes) ? invitado.integrantes : []
         };
     });
 
