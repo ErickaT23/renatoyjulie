@@ -1,13 +1,4 @@
 const config = {
-    event: {
-        defaultEventId: "julissa-renato-2026",
-        eventIdParam: "eventId",
-        legacyFallback: {
-            read: false,
-            write: false,
-            subscribe: false
-        }
-    },
     seo: {
         titulo: "Julissa & Renato | Boda 2026",
         descripcion: "Boda de Julissa y Renato - 21 de noviembre de 2026",
@@ -24,6 +15,16 @@ const config = {
         titulo: "Nuestra Canción",
         archivo: "audio/nuestra-cancion.mp3"
     },
+    event: {
+        defaultEventId: "julissa-renato-2026",
+        eventIdParam: "eventId",
+        legacyFallback: {
+            read: false,
+            write: false,
+            subscribe: false
+        }
+    },
+
     evento: {
         ceremonia: {
             titulo: "Ceremonia",
