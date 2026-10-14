@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     await hydrateSiteConfigForEvent();
     applySiteConfig();
     await InvitadoApp.init();
+    if (!InvitadoApp.data.activo) {
+        InvitadoApp.showDeactivated();
+        return;
+    }
     MensajeFlota.init();
     MusicaPlayer.init();
     initPortada();
@@ -285,6 +289,12 @@ const InvitadoApp = {
         this.renderSection();
         this.renderRSVP();
         return this.data;
+    },
+
+    showDeactivated() {
+        document.body.classList.add('invitacion-bloqueada');
+        const message = document.getElementById('invitacion-desactivada');
+        if (message) message.hidden = false;
     },
 
     getLocalFromURL() {
