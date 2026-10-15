@@ -678,9 +678,12 @@
     function calculateMetrics(rows) {
         const activeRows = rows.filter(function (row) { return row.activo !== false; });
         const totalInvitados = activeRows.length;
-        const confirmadosSi = activeRows.filter(function (row) { return row.respuesta === "si"; }).length;
+        const confirmadosSiInvitados = activeRows.filter(function (row) { return row.respuesta === "si"; }).length;
+        const confirmadosSi = activeRows
+            .filter(function (row) { return row.respuesta === "si"; })
+            .reduce(function (acc, row) { return acc + (Number(row.cantidadConfirmada) || 0); }, 0);
         const confirmadosNo = activeRows.filter(function (row) { return row.respuesta === "no"; }).length;
-        const pendientes = totalInvitados - confirmadosSi - confirmadosNo;
+        const pendientes = totalInvitados - confirmadosSiInvitados - confirmadosNo;
         const personasConfirmadas = activeRows
             .filter(function (row) { return row.respuesta === "si"; })
             .reduce(function (acc, row) { return acc + (Number(row.cantidadConfirmada) || 0); }, 0);

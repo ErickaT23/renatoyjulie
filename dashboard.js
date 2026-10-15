@@ -1,4 +1,4 @@
-import { subscribeToConfirmations, subscribeToInvitados } from "./database.js";
+import { subscribeToConfirmations, subscribeToInvitados } from "./database.js?v=20261015";
 
 const VALID_FILTERS = new Set(["todos", "si", "no", "pendiente"]);
 
@@ -65,19 +65,27 @@ function normalizeResponse(response) {
 
 function normalizeConfirmation(record) {
     const response = normalizeResponse(record && record.respuesta);
+    const integrantes = Array.isArray(record && record.integrantes) ? record.integrantes : [];
+    const memberResponses = record && record.memberResponses && typeof record.memberResponses === "object"
+        ? record.memberResponses
+        : {};
+    const hasMemberResponses = Object.keys(memberResponses).length > 0;
+    const confirmedMembers = integrantes.filter((name, index) => {
+        return memberResponses["member-" + (index + 1)] === "si";
+    });
     return {
         id: normalizeGuestId(record && (record.id || record._key)),
         nombre: String(record && record.nombre || ""),
         pasesAsignados: Math.max(0, Number(record && record.pasesAsignados) || 0),
         respuesta: response,
         cantidadConfirmada: response === "si"
-            ? Math.max(0, Number(record && record.cantidadConfirmada) || 0)
+            ? hasMemberResponses
+                ? confirmedMembers.length
+                : Math.max(0, Number(record && record.cantidadConfirmada) || 0)
             : 0,
         fechaConfirmacion: Number(record && record.fechaConfirmacion) || null
-        ,integrantes: Array.isArray(record && record.integrantes) ? record.integrantes : []
-        ,memberResponses: record && record.memberResponses && typeof record.memberResponses === "object"
-            ? record.memberResponses
-            : {}
+        ,integrantes
+        ,memberResponses
     };
 }
 
@@ -383,6 +391,14 @@ function renderMobileCards(rows, emptyMessage) {
         const dateParts = responseValue === "pendiente"
             ? { date: "--", time: "--" }
             : formatConfirmationDateParts(row.fechaConfirmacion);
+        const members = Array.isArray(row.integrantes) ? row.integrantes : [];
+        const memberResponses = row.memberResponses && typeof row.memberResponses === "object"
+            ? row.memberResponses
+            : {};
+        const confirmedMembers = members.filter((name, index) => {
+            return memberResponses["member-" + (index + 1)] === "si";
+        });
+        const confirmedCount = Number(row.cantidadConfirmada) || 0;
 
         const lineAssigned = document.createElement("div");
         lineAssigned.className = "confirmation-card-line";
@@ -399,7 +415,7 @@ function renderMobileCards(rows, emptyMessage) {
         const confirmedValue = document.createElement("strong");
         confirmedValue.textContent = responseValue === "pendiente"
             ? "--"
-            : String(Number(row.cantidadConfirmada) || 0);
+            : String(confirmedCount);
         lineConfirmed.append(confirmedLabel, confirmedValue);
 
         const lineDate = document.createElement("div");
@@ -418,7 +434,6 @@ function renderMobileCards(rows, emptyMessage) {
         timeValue.textContent = dateParts.time;
         lineTime.append(timeLabel, timeValue);
 
-        const members = row.integrantes || [];
         const memberLine = document.createElement("div");
         memberLine.className = "confirmation-card-line confirmation-card-line--stacked";
         const memberLabel = document.createElement("span");
@@ -434,10 +449,6 @@ function renderMobileCards(rows, emptyMessage) {
         const attendingLabel = document.createElement("span");
         attendingLabel.textContent = "Asistencia confirmada";
         const attendingValue = document.createElement("strong");
-        const confirmedMembers = members.filter((name, index) => {
-            const memberResponse = row.memberResponses && row.memberResponses["member-" + (index + 1)];
-            return memberResponse === "si";
-        });
         attendingValue.textContent = responseValue === "no"
             ? "No asistirá"
             : confirmedMembers.length
