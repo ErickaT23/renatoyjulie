@@ -949,12 +949,16 @@ function initRSVP() {
     const memberNames = Array.isArray(guestData.integrantes) && guestData.integrantes.length
         ? guestData.integrantes
         : [guestData.nombre || 'Invitado'];
+    const passesPerMember = Math.max(1, Math.floor(
+        (Number(guestData.pases) || 1) / memberNames.length
+    ));
+    const passesLabel = passesPerMember === 1 ? 'pase asignado' : 'pases asignados';
     if (membersContainer) {
         membersContainer.replaceChildren(...memberNames.map(function(name, index) {
             const item = document.createElement('div');
             item.className = 'rsvp-member-item';
             item.dataset.memberId = 'member-' + (index + 1);
-            item.innerHTML = '<div class="rsvp-member-copy"><strong></strong><span>1 pase asignado</span></div>'
+            item.innerHTML = '<div class="rsvp-member-copy"><strong></strong><span>' + passesPerMember + ' ' + passesLabel + '</span></div>'
                 + '<div class="rsvp-member-actions"><button type="button" class="rsvp-member-choice" data-response="si">Asistiré</button><button type="button" class="rsvp-member-choice" data-response="no">No asistiré</button></div>'
                 + '<span class="rsvp-member-status"></span>';
             item.querySelector('strong').textContent = name;
