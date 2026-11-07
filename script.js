@@ -728,9 +728,8 @@ function initRSVP() {
         si: 'Gracias por acompañarnos, nos vemos pronto.',
         no: 'Lamentamos que no podrás acompañarnos, vamos a extrañarte.'
     };
-    const RSVP_DEADLINE_UTC = Date.UTC(2026, 9, 18, 5, 59, 59, 999);
     const RSVP_CLOSED_MESSAGE = 'Los extrañaremos y esperamos tener la oportunidad de compartir con ustedes en otra ocasión. Gracias por su comprensión y por acompañarnos con su cariño y buenos deseos.';
-    const rsvpClosed = Date.now() > RSVP_DEADLINE_UTC;
+    const rsvpClosed = InvitadoApp.data.activo !== true;
     const activeEventId = String(window.currentEventId || '').trim();
     let formLocked = false;
     let isCheckingStatus = false;
